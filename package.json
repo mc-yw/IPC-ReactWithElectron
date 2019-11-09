@@ -1,6 +1,8 @@
 {
   "name": "sample",
   "version": "0.1.0",
+  "main": "./electron/electron.js",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.22",
@@ -16,7 +18,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-start": "electron .",
+    "electron-build": "npm run build && cpx electron/electron.js build/ && cpx electron/build/icon.ico build && node ./electron/build/build-win.js --overwrite"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,5 +36,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cpx": "^1.5.0",
+    "electron": "^7.1.1",
+    "electron-builder": "^21.0.2"
   }
 }

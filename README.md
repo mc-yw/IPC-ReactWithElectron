@@ -1,44 +1,24 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React と Electron によるIPC通信のひな型
+下記の記事を参考に CRA と Electron を使い、IPC通信を試みたがエラーが出て上手くいきませんでした。
+[electron化したReactアプリのプロセス間通信 - Qiita](https://qiita.com/cross-xross/items/eaf430b571c96b9e500a)
 
-## Available Scripts
+何カ所か手を加えることでIPC通信に成功したため、ひな型としてここに残しておきます。
 
-In the project directory, you can run:
+## アプリをビルドする
+```npm run build```
 
-### `yarn start`
+## アプリを起動する
+```npm run electron-start```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## アプリをパッケージングする
+```npm run electron-build```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 動作確認の方法と注意点
+アプリを起動し、表示された画面の「PUSH」ボタンを押してみてください。
+正しくIPC通信ができていると、コンソール上に「通信成功！」と表示されます。
 
-### `yarn test`
+```npm run start``` でブラウザ上に画面を表示できますが、これだと React で実装したコンポーネントを表示するだけとなり、Electron での実装箇所は反映されません。
+そのため、IPC通信はできないので注意してください。
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+ちなみにこのアプリで```npm run start```を実行しても、IPCに関する実装が原因でエラーが発生します。
+動作を確認する際は必ず```npm run electron-start```実行の上、チェックしてください。
