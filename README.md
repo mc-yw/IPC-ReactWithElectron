@@ -1,8 +1,9 @@
 # React と Electron によるIPC通信のひな型
-下記の記事を参考に CRA と Electron を使い、IPC通信を試みたがエラーが出て上手くいきませんでした。
+下記の記事を参考に CRA と Electron を使い、IPC通信を試みたがエラーが出て上手くいきませんでした。<br />
 [electron化したReactアプリのプロセス間通信 - Qiita](https://qiita.com/cross-xross/items/eaf430b571c96b9e500a)
 
 何カ所か手を加えることでIPC通信に成功したため、ひな型としてここに残しておきます。
+アプリは以下の方法で操作できます。
 
 ## アプリをビルドする
 ```npm run build```
