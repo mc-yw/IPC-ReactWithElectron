@@ -1,5 +1,5 @@
 import React from 'react';
-import {EditorState, RichUtils} from 'draft-js';
+import {EditorState, RichUtils, convertToRaw} from 'draft-js';
 import Editor from "draft-js-plugins-editor";
 import createCounterPlugin from 'draft-js-counter-plugin';
 import logo from './logo.svg';
@@ -18,10 +18,15 @@ class App extends React.Component<Props, State> {
    */
   private ipcRenderer = electron.ipcRenderer;
 
+  // SAVEボタン押下時の挙動
   private onClickHandler = () => {
     // Mainプロセスに通知する
-    this.ipcRenderer.send('notifyText', "hogehoge");
+    const contentState = this.state.editorState.getCurrentContent();
+    const content = convertToRaw(contentState);
+    const content_json = JSON.stringify(content);
+    this.ipcRenderer.send('notifyText', content_json);
   }
+
   private keyword1: React.RefObject<HTMLInputElement>;
   private keyword2: React.RefObject<HTMLInputElement>;
   private keyword3: React.RefObject<HTMLInputElement>;
@@ -165,7 +170,10 @@ class App extends React.Component<Props, State> {
               limit={40}
               countFunction={() => this.customCountFunction(contentState.getPlainText(), (this.keyword5.current || {}).value)}
             />
-            <div><button onClick={this.onClickHandler}>PUSH</button></div>
+
+            {/*文章保存ボタン*/}
+            <div><button onClick={this.onClickHandler}>SAVE</button></div>
+
           </div>
         </div>
       </div>
@@ -270,13 +278,6 @@ const InlineStyleControls = (props) => {
       )}
     </div>
   );
-
-
 };
-
-
-
-
-
 
 export default App;
