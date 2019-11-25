@@ -26,33 +26,30 @@ function createWindow() {
     slashes: true
   });
   mainWindow.loadURL(startUrl);
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', function () {
     mainWindow = null
   })
   mainWindow.webContents.openDevTools();
 }
 
 app.on('ready', createWindow);
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 });
-app.on('activate', function() {
+app.on('activate', function () {
   if (mainWindow === null) {
     createWindow()
   }
 });
 
 /*******************************
+ * IPCメインプロセスブロック
  * Renderプロセスからの通知を受信
  *******************************/
-ipcMain.on('notifyText', (event, args) => {
-  //TODO: データ受信時の処理
-  saveFile();
-  // 以下のコードは動作するため、IPC通信やfsは正常に動作している
-  // writeFile()の記述は間違っていない
-  /*writeFile('test.txt', 'test OK!');*/
+ipcMain.on('saveText', (event, content_json) => {
+  saveFile(content_json);
 });
 
 //openFileボタンが押されたとき（ファイル名取得まで）
@@ -60,12 +57,12 @@ function openFile() {
   const win = BrowserWindow.getFocusedWindow();
   dialog.showOpenDialog(
     win, {
-      properties: ['openFile'],
-      filters: [{
-        name: 'Document',
-        extensions: ['csv', 'txt']
-      }]
-    },
+    properties: ['openFile'],
+    filters: [{
+      name: 'Document',
+      extensions: ['csv', 'txt']
+    }]
+  },
     (fileNames) => {
       if (fileNames) {
         // alert(fileNames[0]);
@@ -79,7 +76,6 @@ function openFile() {
 function readFile(path) {
   fs.readFile(path, (error, data) => {
     if (error != null) {
-      alert("file open error.");
       return;
     }
     preview.textContent = data.toString();
@@ -91,7 +87,6 @@ function writeFile(path, data) {
   console.trace();
   fs.writeFile(path, data, (error) => {
     if (error != null) {
-      alert("save error.");
       return;
     }
   });
@@ -99,7 +94,7 @@ function writeFile(path, data) {
 
 // saveFileボタンが押されたとき
 // await/async を使ったPromise直列処理
-async function saveFile() {
+async function saveFile(text) {
   const win = BrowserWindow.getFocusedWindow();
   // dialog.showSaveDialog() から filePath 返ってきてから後続の処理に続く
   const { filePath } = await dialog.showSaveDialog(
@@ -114,7 +109,6 @@ async function saveFile() {
       ]
     }
   );
-  const data = 'test.';
-  console.log(filePath);
+  const data = text;
   writeFile(filePath, data);
 }
