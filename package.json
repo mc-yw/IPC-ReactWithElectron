@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "cpx": "^1.5.0",
-    "electron": "^7.1.1",
+    "electron": "^9.4.0",
     "electron-builder": "^21.0.2"
   }
 }
